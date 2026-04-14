@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boutique - Stubborn{% endblock %}
+
+{% block body %}
+<div class="row">
+    {# Sidebar filtre prix #}
+    <div class="col-md-3 mb-4">
+        <div class="card p-3">
+            <h6 class="fw-bold mb-3">Fourchette de prix</h6>
+            <div class="list-group list-group-flush">
+                <a href="{{ path('app_products') }}"
+                   class="list-group-item list-group-item-action {% if price_range is null %}active{% endif %}">
+                    Tous les prix
+                </a>
+                <a href="{{ path('app_products', {price: '10-29'}) }}"
+                   class="list-group-item list-group-item-action {% if price_range == '10-29' %}active{% endif %}">
+                    10 à 29 €
+                </a>
+                <a href="{{ path('app_products', {price: '29-35'}) }}"
+                   class="list-group-item list-group-item-action {% if price_range == '29-35' %}active{% endif %}">
+                    29 à 35 €
+                </a>
+                <a href="{{ path('app_products', {price: '35-50'}) }}"
+                   class="list-group-item list-group-item-action {% if price_range == '35-50' %}active{% endif %}">
+                    35 à 50 €
+                </a>
+            </div>
+        </div>
+        <div class="mt-3">
+            <a href="{{ path('app_home') }}" class="text-muted small">← Retour à l'accueil</a>
+        </div>
+    </div>
+
+    {# Grille produits #}
+    <div class="col-md-9">
+        {% if products is empty %}
+            <p class="text-muted">Aucun produit dans cette fourchette de prix.</p>
+        {% else %}
+            <div class="row g-4">
+                {% for product in products %}
+                    <div class="col-md-4">
+                        <div class="product-card rounded p-3 h-100">
+                            <img src="{{ asset('images/products/' ~ product.image) }}"
+                                 alt="{{ product.name }}" class="rounded mb-3">
+                            <h6>{{ product.name }}</h6>
+                            <p class="text-muted">{{ product.price }} €</p>
+                            <a href="{{ path('app_product', {id: product.id}) }}"
+                               class="btn btn-stubborn btn-sm">Voir</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
