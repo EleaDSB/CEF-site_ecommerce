@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier - Stubborn{% endblock %}
+
+{% block body %}
+<h2 class="mb-4">Mon Panier</h2>
+
+{% if items is empty %}
+    <div class="text-center py-5">
+        <p class="text-muted fs-5">Votre panier est vide.</p>
+        <a href="{{ path('app_products') }}" class="btn btn-stubborn">Voir la boutique</a>
+    </div>
+{% else %}
+    {# Liste des articles #}
+    <div class="d-flex flex-column gap-3 mb-4">
+        {% for item in items %}
+            <div class="card p-3">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <img src="{{ asset('images/products/' ~ item.product.image) }}"
+                             alt="{{ item.product.name }}"
+                             class="img-fluid rounded" style="max-height: 90px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-3">
+                        <strong>{{ item.product.name }}</strong>
+                    </div>
+                    <div class="col-md-2">
+                        {{ item.product.price }} €
+                    </div>
+                    <div class="col-md-2">
+                        Taille : <strong>{{ item.size }}</strong>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <form method="post" action="{{ path('app_cart_remove', {id: item.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('cart_remove_' ~ item.id) }}">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                Retirer du panier
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Total et actions #}
+    <div class="d-flex justify-content-end align-items-center gap-3 mt-3">
+        <a href="{{ path('app_products') }}" class="btn btn-outline-secondary">
+            Continuer mes achats
+        </a>
+        <div class="border rounded px-4 py-2 fw-bold fs-5">
+            TOTAL : {{ total|number_format(2, ',', ' ') }} €
+        </div>
+        <a href="{{ path('app_payment_checkout') }}" class="btn btn-danger px-4">
+            Finaliser ma commande
+        </a>
+    </div>
+{% endif %}
+{% endblock %}
