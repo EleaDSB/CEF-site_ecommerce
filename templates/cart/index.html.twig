@@ -51,7 +51,8 @@
         <div class="border rounded px-4 py-2 fw-bold fs-5">
             TOTAL : {{ total|number_format(2, ',', ' ') }} €
         </div>
-        <a href="{{ path('app_payment_checkout') }}" class="btn btn-danger px-4">
+        <a href="#" class="btn btn-danger px-4 disabled" aria-disabled="true"
+           title="Paiement bientôt disponible">
             Finaliser ma commande
         </a>
     </div>
